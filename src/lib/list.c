@@ -292,7 +292,22 @@ int ll_insert_after_node(struct LinkedList *linked_list, struct LinkedListNode *
  * @param value A pointer to the value to insert.
  * @return 0 if the value was inserted successfully, -1 otherwise.
  */
-int ll_insert_after_value(struct LinkedList *linked_list, void *after, void *value);
+int ll_insert_after_value(struct LinkedList *linked_list, void *after, void *value)
+{
+    struct LinkedListNode *current_node = linked_list->head;
+
+    while (current_node != NULL)
+    {
+        if (linked_list->value_compare_function(current_node->value, after) == 0)
+        {
+            return ll_insert_after_node(linked_list, current_node, value);
+        }
+
+        current_node = current_node->next;
+    }
+
+    return -1;
+}
 
 /**
  * @brief Removes a node from a linked list.
