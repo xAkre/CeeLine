@@ -263,7 +263,28 @@ int ll_insert_before_value(struct LinkedList *linked_list, void *before, void *v
  * @return 0 if the value was inserted successfully, -1 otherwise.
  */
 int ll_insert_after_node(struct LinkedList *linked_list, struct LinkedListNode *node,
-                         void *value);
+                         void *value)
+{
+    if (!ll_has_node(linked_list, node))
+    {
+        return -1;
+    }
+
+    struct LinkedListNode *new_node = malloc(sizeof(struct LinkedListNode));
+
+    if (new_node == NULL)
+    {
+        return -1;
+    }
+
+    new_node->value = value;
+    new_node->next = node->next;
+    node->next = new_node;
+
+    linked_list->size++;
+
+    return 0;
+}
 /**
  * @brief Inserts a value after a value in a linked list.
  * @param linked_list A pointer to the linked list to insert into.
