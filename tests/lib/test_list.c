@@ -367,6 +367,61 @@ void test_ll_insert_after_value()
     return;
 }
 
+void test_ll_remove_node()
+{
+    printf("Testing ll_remove_node\n");
+
+    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+
+    int *value = malloc(sizeof(int));
+    *value = 42;
+    int *value2 = malloc(sizeof(int));
+    *value2 = 43;
+    int *value3 = malloc(sizeof(int));
+    *value3 = 44;
+
+    ll_push(linked_list, value);
+    ll_push(linked_list, value2);
+    ll_push(linked_list, value3);
+
+    struct LinkedListNode *node = linked_list->head->next;
+
+    assert(ll_remove_node(linked_list, node) == 0);
+    assert(linked_list->size == 2);
+    assert(linked_list->head != NULL);
+    assert(linked_list->tail != NULL);
+    assert(linked_list->head != linked_list->tail);
+    assert(linked_list->head->value == value);
+    assert(linked_list->head->next == linked_list->tail);
+    assert(linked_list->tail->value == value3);
+    assert(linked_list->tail->next == NULL);
+
+    assert(ll_remove_node(linked_list, linked_list->head) == 0);
+    assert(linked_list->size == 1);
+    assert(linked_list->head != NULL);
+    assert(linked_list->tail != NULL);
+    assert(linked_list->head == linked_list->tail);
+    assert(linked_list->head->value == value3);
+    assert(linked_list->head->next == NULL);
+
+    assert(ll_remove_node(linked_list, linked_list->head) == 0);
+    assert(linked_list->size == 0);
+    assert(linked_list->head == NULL);
+    assert(linked_list->tail == NULL);
+
+    struct LinkedListNode *non_existent_node = malloc(sizeof(struct LinkedListNode));
+    non_existent_node->value = value;
+    non_existent_node->next = NULL;
+
+    assert(ll_remove_node(linked_list, non_existent_node) == -1);
+
+    ll_free(linked_list);
+
+    printf("ll_remove_node passed\n");
+
+    return;
+}
+
 int main()
 {
     printf("Running tests for \"lib/list.c\"\n");
@@ -380,6 +435,7 @@ int main()
     test_ll_insert_before_value();
     test_ll_insert_after_node();
     test_ll_insert_after_value();
+    test_ll_remove_node();
 
     printf("All tests passed for \"lib/list.c\"\n");
 
