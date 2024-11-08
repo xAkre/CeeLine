@@ -133,7 +133,45 @@ void *ll_pop(struct LinkedList *linked_list)
  * @return 0 if the value was inserted successfully, -1 otherwise.
  */
 int ll_insert_before_node(struct LinkedList *linked_list, struct LinkedListNode *node,
-                          void *value);
+                          void *value)
+{
+    struct LinkedListNode *new_node = malloc(sizeof(struct LinkedListNode));
+
+    if (new_node == NULL)
+    {
+        return -1;
+    }
+
+    new_node->value = value;
+    new_node->next = node;
+
+    if (node == linked_list->head)
+    {
+        linked_list->head = new_node;
+        linked_list->size++;
+
+        return 0;
+    }
+    else
+    {
+        struct LinkedListNode *current_node = linked_list->head;
+
+        while (current_node != NULL)
+        {
+            if (current_node->next == node)
+            {
+                current_node->next = new_node;
+                linked_list->size++;
+
+                return 0;
+            }
+
+            return -1;
+        }
+    }
+
+    return -1;
+}
 
 /**
  * @brief Inserts a value before a value in a linked list.
