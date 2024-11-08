@@ -60,6 +60,29 @@ void ll_free(struct LinkedList *linked_list)
 }
 
 /**
+ * @brief Checks if a linked list has a node.
+ * @param linked_list A pointer to the linked list to check.
+ * @param node A pointer to the node to check for.
+ * @return 1 if the linked list has the node, 0 otherwise.
+ */
+int ll_has_node(struct LinkedList *linked_list, struct LinkedListNode *node)
+{
+    struct LinkedListNode *current_node = linked_list->head;
+
+    while (current_node != NULL)
+    {
+        if (current_node == node)
+        {
+            return 1;
+        }
+
+        current_node = current_node->next;
+    }
+
+    return 0;
+}
+
+/**
  * @brief Gets a node by its value.
  * @param linked_list A pointer to the linked list to search.
  * @param value A pointer to the value to search for.
@@ -241,7 +264,6 @@ int ll_insert_before_value(struct LinkedList *linked_list, void *before, void *v
  */
 int ll_insert_after_node(struct LinkedList *linked_list, struct LinkedListNode *node,
                          void *value);
-
 /**
  * @brief Inserts a value after a value in a linked list.
  * @param linked_list A pointer to the linked list to insert into.

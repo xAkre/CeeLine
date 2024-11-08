@@ -68,6 +68,14 @@ struct LinkedList *ll_create(ValueCompareFunction value_compare_function,
 void ll_free(struct LinkedList *linked_list);
 
 /**
+ * @brief Checks if a linked list has a node.
+ * @param linked_list A pointer to the linked list to check.
+ * @param node A pointer to the node to check for.
+ * @return 1 if the linked list has the node, 0 otherwise.
+ */
+int ll_has_node(struct LinkedList *linked_list, struct LinkedListNode *node);
+
+/**
  * @brief Gets a node by its value.
  * @param linked_list A pointer to the linked list to search.
  * @param value A pointer to the value to search for.
