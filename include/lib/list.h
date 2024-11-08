@@ -68,6 +68,15 @@ struct LinkedList *ll_create(ValueCompareFunction value_compare_function,
 void ll_free(struct LinkedList *linked_list);
 
 /**
+ * @brief Gets a node by its value.
+ * @param linked_list A pointer to the linked list to search.
+ * @param value A pointer to the value to search for.
+ * @return A pointer to the node with the value, or NULL if the value is not found.
+ */
+struct LinkedListNode *ll_get_node_by_value(struct LinkedList *linked_list,
+                                            void *value);
+
+/**
  * @brief Pushes a value onto the front of a linked list.
  * @param linked_list A pointer to the linked list to push onto.
  * @param value A pointer to the value to push.
