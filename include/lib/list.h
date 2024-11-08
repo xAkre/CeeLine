@@ -146,7 +146,7 @@ int ll_insert_after_value(struct LinkedList *linked_list, void *after, void *val
 int ll_remove_node(struct LinkedList *linked_list, struct LinkedListNode *node);
 
 /**
- * @brief Removes a value from a linked list.
+ * @brief Removes the first occurrence of a value from a linked list.
  * @param linked_list A pointer to the linked list to remove from.
  * @param value A pointer to the value to remove.
  * @return 0 if the value was removed successfully, -1 otherwise.
