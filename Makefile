@@ -32,4 +32,4 @@ clean:
 
 # Order only prerequisites
 $(OUT_DIR)/lib $(OUT_DIR)/tests $(OUT_DIR)/tests/lib:
-	mkdir -p $@
+	@mkdir -p $@
