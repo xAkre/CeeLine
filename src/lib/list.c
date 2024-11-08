@@ -60,6 +60,29 @@ void ll_free(struct LinkedList *linked_list)
 }
 
 /**
+ * @brief Gets a node by its value.
+ * @param linked_list A pointer to the linked list to search.
+ * @param value A pointer to the value to search for.
+ * @return A pointer to the node with the value, or NULL if the value is not found.
+ */
+struct LinkedListNode *ll_get_node_by_value(struct LinkedList *linked_list, void *value)
+{
+    struct LinkedListNode *current_node = linked_list->head;
+
+    while (current_node != NULL)
+    {
+        if (linked_list->value_compare_function(current_node->value, value) == 0)
+        {
+            return current_node;
+        }
+
+        current_node = current_node->next;
+    }
+
+    return NULL;
+}
+
+/**
  * @brief Pushes a value onto the front of a linked list.
  * @param linked_list A pointer to the linked list to push onto.
  * @param value A pointer to the value to push.
