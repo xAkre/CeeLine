@@ -94,7 +94,36 @@ int ll_push(struct LinkedList *linked_list, void *value)
  * @param linked_list A pointer to the linked list to pop from.
  * @return A pointer to the popped value, or NULL if the list is empty.
  */
-void *ll_pop(struct LinkedList *linked_list);
+void *ll_pop(struct LinkedList *linked_list)
+{
+    if (linked_list->size == 0)
+    {
+        return NULL;
+    }
+
+    if (linked_list->size == 1)
+    {
+        void *value = linked_list->head->value;
+
+        free(linked_list->head);
+
+        linked_list->head = NULL;
+        linked_list->tail = NULL;
+        linked_list->size = 0;
+
+        return value;
+    }
+
+    struct LinkedListNode *popped_node = linked_list->head;
+    void *value = popped_node->value;
+
+    linked_list->head = popped_node->next;
+    linked_list->size--;
+
+    free(popped_node);
+
+    return value;
+}
 
 /**
  * @brief Inserts a value before a node in a linked list.
