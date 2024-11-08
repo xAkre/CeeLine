@@ -327,6 +327,46 @@ void test_ll_insert_after_node()
     return;
 }
 
+void test_ll_insert_after_value()
+{
+    printf("Testing ll_insert_after_value\n");
+
+    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+
+    int *value = malloc(sizeof(int));
+    *value = 42;
+    int *value2 = malloc(sizeof(int));
+    *value2 = 43;
+    int *value3 = malloc(sizeof(int));
+    *value3 = 44;
+
+    ll_push(linked_list, value);
+    ll_push(linked_list, value2);
+
+    assert(ll_insert_after_value(linked_list, value, value3) == 0);
+    assert(linked_list->size == 3);
+    assert(linked_list->head != NULL);
+    assert(linked_list->tail != NULL);
+    assert(linked_list->head != linked_list->tail);
+    assert(linked_list->head->value == value);
+    assert(linked_list->head->next != linked_list->tail);
+    assert(linked_list->head->next->value == value3);
+    assert(linked_list->head->next->next == linked_list->tail);
+    assert(linked_list->tail->value == value2);
+    assert(linked_list->tail->next == NULL);
+
+    int *non_existent_value = malloc(sizeof(int));
+    *non_existent_value = 45;
+
+    assert(ll_insert_after_value(linked_list, non_existent_value, value3) == -1);
+
+    ll_free(linked_list);
+
+    printf("ll_insert_after_value passed\n");
+
+    return;
+}
+
 int main()
 {
     printf("Running tests for \"lib/list.c\"\n");
@@ -339,6 +379,7 @@ int main()
     test_ll_insert_before_node();
     test_ll_insert_before_value();
     test_ll_insert_after_node();
+    test_ll_insert_after_value();
 
     printf("All tests passed for \"lib/list.c\"\n");
 
