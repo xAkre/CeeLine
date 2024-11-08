@@ -99,9 +99,9 @@ void test_ll_push()
     assert(linked_list->head != NULL);
     assert(linked_list->tail != NULL);
     assert(linked_list->head != linked_list->tail);
-    assert(linked_list->head->value == value2);
+    assert(linked_list->head->value == value);
     assert(linked_list->head->next == linked_list->tail);
-    assert(linked_list->tail->value == value);
+    assert(linked_list->tail->value == value2);
     assert(linked_list->tail->next == NULL);
 
     ll_free(linked_list);

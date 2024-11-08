@@ -83,7 +83,7 @@ struct LinkedListNode *ll_get_node_by_value(struct LinkedList *linked_list, void
 }
 
 /**
- * @brief Pushes a value onto the front of a linked list.
+ * @brief Pushes a value onto the tail of a linked list.
  * @param linked_list A pointer to the linked list to push onto.
  * @param value A pointer to the value to push.
  * @return 0 if the value was pushed successfully, -1 otherwise.
@@ -98,12 +98,16 @@ int ll_push(struct LinkedList *linked_list, void *value)
     }
 
     new_node->value = value;
-    new_node->next = linked_list->head;
+    new_node->next = NULL;
 
-    linked_list->head = new_node;
-
-    if (linked_list->tail == NULL)
+    if (linked_list->size == 0)
     {
+        linked_list->head = new_node;
+        linked_list->tail = new_node;
+    }
+    else
+    {
+        linked_list->tail->next = new_node;
         linked_list->tail = new_node;
     }
 
