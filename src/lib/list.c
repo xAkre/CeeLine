@@ -315,7 +315,47 @@ int ll_insert_after_value(struct LinkedList *linked_list, void *after, void *val
  * @param node A pointer to the node to remove.
  * @return 0 if the node was removed successfully, -1 otherwise.
  */
-int ll_remove_node(struct LinkedList *linked_list, struct LinkedListNode *node);
+int ll_remove_node(struct LinkedList *linked_list, struct LinkedListNode *node)
+{
+    struct LinkedListNode *current_node = linked_list->head;
+
+    if (node == linked_list->head)
+    {
+        linked_list->head = node->next;
+        linked_list->size--;
+
+        if (linked_list->size == 0)
+        {
+            linked_list->tail = NULL;
+        }
+
+        free(node);
+
+        return 0;
+    }
+
+    while (current_node != NULL)
+    {
+        if (current_node->next == node)
+        {
+            current_node->next = node->next;
+            linked_list->size--;
+
+            if (node == linked_list->tail)
+            {
+                linked_list->tail = current_node;
+            }
+
+            free(node);
+
+            return 0;
+        }
+
+        current_node = current_node->next;
+    }
+
+    return -1;
+}
 
 /**
  * @brief Removes a value from a linked list.
