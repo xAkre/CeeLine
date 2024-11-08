@@ -92,7 +92,7 @@ int ll_push(struct LinkedList *linked_list, void *value)
 /**
  * @brief Pops a value from the front of a linked list.
  * @param linked_list A pointer to the linked list to pop from.
- * @return A pointer to the popped value.
+ * @return A pointer to the popped value, or NULL if the list is empty.
  */
 void *ll_pop(struct LinkedList *linked_list);
 
