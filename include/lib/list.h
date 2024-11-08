@@ -5,6 +5,8 @@
 #ifndef __LIST_H
 #define __LIST_H
 
+#include <stddef.h>
+
 /**
  * @brief A function that frees a generic value.
  * @param param1 The value to free.
@@ -42,7 +44,7 @@ struct LinkedListNode
  */
 struct LinkedList
 {
-    int size;
+    size_t size;
     struct LinkedListNode *head;
     struct LinkedListNode *tail;
     ValueFreeFunction value_free_function;
