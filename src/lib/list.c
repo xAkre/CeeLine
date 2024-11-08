@@ -363,4 +363,14 @@ int ll_remove_node(struct LinkedList *linked_list, struct LinkedListNode *node)
  * @param value A pointer to the value to remove.
  * @return 0 if the value was removed successfully, -1 otherwise.
  */
-int ll_remove_value(struct LinkedList *linked_list, void *value);
+int ll_remove_value(struct LinkedList *linked_list, void *value)
+{
+    struct LinkedListNode *node = ll_get_node_by_value(linked_list, value);
+
+    if (node == NULL)
+    {
+        return -1;
+    }
+
+    return ll_remove_node(linked_list, node);
+}
