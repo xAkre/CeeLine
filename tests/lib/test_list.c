@@ -34,11 +34,47 @@ void test_ll_create()
     return;
 }
 
+void test_ll_push()
+{
+    printf("Testing ll_push\n");
+
+    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+
+    int *value = malloc(sizeof(int));
+    *value = 42;
+
+    assert(ll_push(linked_list, value) == 0);
+    assert(linked_list->size == 1);
+    assert(linked_list->head != NULL);
+    assert(linked_list->tail != NULL);
+    assert(linked_list->head == linked_list->tail);
+    assert(linked_list->head->value == value);
+    assert(linked_list->head->next == NULL);
+
+    int *value2 = malloc(sizeof(int));
+    *value2 = 43;
+
+    assert(ll_push(linked_list, value2) == 0);
+    assert(linked_list->size == 2);
+    assert(linked_list->head != NULL);
+    assert(linked_list->tail != NULL);
+    assert(linked_list->head != linked_list->tail);
+    assert(linked_list->head->value == value2);
+    assert(linked_list->head->next == linked_list->tail);
+    assert(linked_list->tail->value == value);
+    assert(linked_list->tail->next == NULL);
+
+    ll_free(linked_list);
+
+    return;
+}
+
 int main()
 {
     printf("Running tests for \"lib/list.c\"\n");
 
     test_ll_create();
+    test_ll_push();
 
     printf("All tests passed for \"lib/list.c\"\n");
 
