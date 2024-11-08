@@ -76,7 +76,7 @@ void ll_free(struct LinkedList *linked_list);
 int ll_has_node(struct LinkedList *linked_list, struct LinkedListNode *node);
 
 /**
- * @brief Gets a node by its value.
+ * @brief Gets a node from a linked list by its value.
  * @param linked_list A pointer to the linked list to search.
  * @param value A pointer to the value to search for.
  * @return A pointer to the node with the value, or NULL if the value is not found.
