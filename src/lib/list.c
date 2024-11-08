@@ -117,7 +117,7 @@ int ll_push(struct LinkedList *linked_list, void *value)
 }
 
 /**
- * @brief Pops a value from the front of a linked list.
+ * @brief Pops a value from the tail of a linked list.
  * @param linked_list A pointer to the linked list to pop from.
  * @return A pointer to the popped value, or NULL if the list is empty.
  */
@@ -130,9 +130,9 @@ void *ll_pop(struct LinkedList *linked_list)
 
     if (linked_list->size == 1)
     {
-        void *value = linked_list->head->value;
+        void *value = linked_list->tail->value;
 
-        free(linked_list->head);
+        free(linked_list->tail);
 
         linked_list->head = NULL;
         linked_list->tail = NULL;
@@ -141,10 +141,18 @@ void *ll_pop(struct LinkedList *linked_list)
         return value;
     }
 
-    struct LinkedListNode *popped_node = linked_list->head;
+    struct LinkedListNode *popped_node = linked_list->tail;
     void *value = popped_node->value;
 
-    linked_list->head = popped_node->next;
+    struct LinkedListNode *current_node = linked_list->head;
+
+    while (current_node->next != linked_list->tail)
+    {
+        current_node = current_node->next;
+    }
+
+    linked_list->tail = current_node;
+    linked_list->tail->next = NULL;
     linked_list->size--;
 
     free(popped_node);
