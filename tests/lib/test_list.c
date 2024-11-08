@@ -34,6 +34,46 @@ void test_ll_create()
     return;
 }
 
+void test_ll_get_node_by_value()
+{
+    printf("Testing ll_get_node_by_value\n");
+
+    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+
+    int *value = malloc(sizeof(int));
+    *value = 42;
+    int *value2 = malloc(sizeof(int));
+    *value2 = 43;
+
+    ll_push(linked_list, value);
+    ll_push(linked_list, value2);
+
+    struct LinkedListNode *node = ll_get_node_by_value(linked_list, value2);
+
+    assert(node != NULL);
+    assert(node->value == value2);
+    assert(node->next != NULL);
+    assert(node->next->value == value);
+    assert(node->next->next == NULL);
+
+    node = ll_get_node_by_value(linked_list, value);
+
+    assert(node != NULL);
+    assert(node->value == value);
+    assert(node->next == NULL);
+
+    int *non_existent_value = malloc(sizeof(int));
+    *non_existent_value = 44;
+
+    assert(ll_get_node_by_value(linked_list, non_existent_value) == NULL);
+
+    ll_free(linked_list);
+
+    printf("ll_get_node_by_value passed\n");
+
+    return;
+}
+
 void test_ll_push()
 {
     printf("Testing ll_push\n");
@@ -219,6 +259,7 @@ int main()
     printf("Running tests for \"lib/list.c\"\n");
 
     test_ll_create();
+    test_ll_get_node_by_value();
     test_ll_push();
     test_ll_pop();
     test_ll_insert_before_node();
