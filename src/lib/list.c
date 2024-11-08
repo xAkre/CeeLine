@@ -232,7 +232,7 @@ int ll_insert_before_node(struct LinkedList *linked_list, struct LinkedListNode 
 }
 
 /**
- * @brief Inserts a value before a value in a linked list.
+ * @brief Inserts a value before the first occurrence of a value in a linked list.
  * @param linked_list A pointer to the linked list to insert into.
  * @param before A pointer to the value to insert before.
  * @param value A pointer to the value to insert.
