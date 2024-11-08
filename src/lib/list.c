@@ -65,7 +65,29 @@ void ll_free(struct LinkedList *linked_list)
  * @param value A pointer to the value to push.
  * @return 0 if the value was pushed successfully, -1 otherwise.
  */
-int ll_push(struct LinkedList *linked_list, void *value);
+int ll_push(struct LinkedList *linked_list, void *value)
+{
+    struct LinkedListNode *new_node = malloc(sizeof(struct LinkedListNode));
+
+    if (new_node == NULL)
+    {
+        return -1;
+    }
+
+    new_node->value = value;
+    new_node->next = linked_list->head;
+
+    linked_list->head = new_node;
+
+    if (linked_list->tail == NULL)
+    {
+        linked_list->tail = new_node;
+    }
+
+    linked_list->size++;
+
+    return 0;
+}
 
 /**
  * @brief Pops a value from the front of a linked list.
