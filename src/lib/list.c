@@ -129,33 +129,39 @@ void *ll_pop(struct LinkedList *linked_list)
  * @brief Inserts a value before a node in a linked list.
  * @param linked_list A pointer to the linked list to insert into.
  * @param node A pointer to the node to insert before.
+ * @param value A pointer to the value to insert.
  * @return 0 if the value was inserted successfully, -1 otherwise.
  */
-int ll_insert_before_node(struct LinkedList *linked_list, struct LinkedListNode *node);
+int ll_insert_before_node(struct LinkedList *linked_list, struct LinkedListNode *node,
+                          void *value);
 
 /**
  * @brief Inserts a value before a value in a linked list.
  * @param linked_list A pointer to the linked list to insert into.
- * @param value A pointer to the value to insert before.
+ * @param before A pointer to the value to insert before.
+ * @param value A pointer to the value to insert.
  * @return 0 if the value was inserted successfully, -1 otherwise.
  */
-int ll_insert_before_value(struct LinkedList *linked_list, void *value);
+int ll_insert_before_value(struct LinkedList *linked_list, void *before, void *value);
 
 /**
  * @brief Inserts a value after a node in a linked list.
  * @param linked_list A pointer to the linked list to insert into.
  * @param node A pointer to the node to insert after.
+ * @param value A pointer to the value to insert.
  * @return 0 if the value was inserted successfully, -1 otherwise.
  */
-int ll_insert_after_node(struct LinkedList *linked_list, struct LinkedListNode *node);
+int ll_insert_after_node(struct LinkedList *linked_list, struct LinkedListNode *node,
+                         void *value);
 
 /**
  * @brief Inserts a value after a value in a linked list.
  * @param linked_list A pointer to the linked list to insert into.
- * @param value A pointer to the value to insert after.
+ * @param after A pointer to the value to insert after.
+ * @param value A pointer to the value to insert.
  * @return 0 if the value was inserted successfully, -1 otherwise.
  */
-int ll_insert_after_value(struct LinkedList *linked_list, void *value);
+int ll_insert_after_value(struct LinkedList *linked_list, void *after, void *value);
 
 /**
  * @brief Removes a node from a linked list.
