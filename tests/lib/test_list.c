@@ -48,18 +48,18 @@ void test_ll_get_node_by_value()
     ll_push(linked_list, value);
     ll_push(linked_list, value2);
 
-    struct LinkedListNode *node = ll_get_node_by_value(linked_list, value2);
-
-    assert(node != NULL);
-    assert(node->value == value2);
-    assert(node->next != NULL);
-    assert(node->next->value == value);
-    assert(node->next->next == NULL);
-
-    node = ll_get_node_by_value(linked_list, value);
+    struct LinkedListNode *node = ll_get_node_by_value(linked_list, value);
 
     assert(node != NULL);
     assert(node->value == value);
+    assert(node->next != NULL);
+    assert(node->next->value == value2);
+    assert(node->next->next == NULL);
+
+    node = ll_get_node_by_value(linked_list, value2);
+
+    assert(node != NULL);
+    assert(node->value == value2);
     assert(node->next == NULL);
 
     int *non_existent_value = malloc(sizeof(int));
