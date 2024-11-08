@@ -286,7 +286,7 @@ int ll_insert_after_node(struct LinkedList *linked_list, struct LinkedListNode *
     return 0;
 }
 /**
- * @brief Inserts a value after a value in a linked list.
+ * @brief Inserts a value after the first occurrence of a value in a linked list.
  * @param linked_list A pointer to the linked list to insert into.
  * @param after A pointer to the value to insert after.
  * @param value A pointer to the value to insert.
