@@ -66,6 +66,50 @@ void test_ll_push()
 
     ll_free(linked_list);
 
+    printf("ll_push passed\n");
+
+    return;
+}
+
+void test_ll_pop()
+{
+    printf("Testing ll_pop\n");
+
+    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+
+    assert(ll_pop(linked_list) == NULL);
+
+    int *value = malloc(sizeof(int));
+    *value = 42;
+    int *value2 = malloc(sizeof(int));
+    *value2 = 43;
+
+    ll_push(linked_list, value);
+    ll_push(linked_list, value2);
+
+    int *popped_value = ll_pop(linked_list);
+
+    assert(popped_value != NULL);
+    assert(*popped_value == *value2);
+    assert(linked_list->size == 1);
+    assert(linked_list->head != NULL);
+    assert(linked_list->tail != NULL);
+    assert(linked_list->head == linked_list->tail);
+    assert(linked_list->head->value == value);
+    assert(linked_list->head->next == NULL);
+
+    popped_value = ll_pop(linked_list);
+
+    assert(popped_value != NULL);
+    assert(*popped_value == *value);
+    assert(linked_list->size == 0);
+    assert(linked_list->head == NULL);
+    assert(linked_list->tail == NULL);
+
+    ll_free(linked_list);
+
+    printf("ll_pop passed\n");
+
     return;
 }
 
@@ -75,6 +119,7 @@ int main()
 
     test_ll_create();
     test_ll_push();
+    test_ll_pop();
 
     printf("All tests passed for \"lib/list.c\"\n");
 
