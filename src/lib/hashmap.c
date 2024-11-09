@@ -3,6 +3,7 @@
  */
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "lib/hashmap.h"
@@ -115,7 +116,35 @@ void hm_free(struct HashMap *hashmap)
  * @param value A pointer to the value to set.
  * @return 0 if the key-value pair was set successfully, -1 otherwise.
  */
-int hm_set(struct HashMap *hashmap, void *key, void *value);
+int hm_set(struct HashMap *hashmap, void *key, void *value)
+{
+    size_t index = hashmap->hash_function(hashmap, key);
+
+    struct HashMapLinkedListNode *node_value =
+        malloc(sizeof(struct HashMapLinkedListNode));
+    if (node_value == NULL)
+    {
+        return -1;
+    }
+
+    node_value->hashmap = hashmap;
+    node_value->key = key;
+    node_value->value = value;
+
+    struct LinkedListNode *existing_node_with_key =
+        ll_get_node_by_value(hashmap->buckets[index], node_value);
+
+    if (existing_node_with_key == NULL)
+    {
+        ll_push(hashmap->buckets[index], node_value);
+    }
+    else
+    {
+        existing_node_with_key->value = node_value;
+    }
+
+    return 0;
+}
 
 /**
  * @brief Gets a value from a hashmap.
