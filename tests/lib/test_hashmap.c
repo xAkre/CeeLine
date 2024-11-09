@@ -109,12 +109,57 @@ void test_hm_set()
     return;
 }
 
+void test_hm_get()
+{
+    printf("Testing hm_get\n");
+
+    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function,
+                                        int_free_function, int_free_function);
+
+    int *key = malloc(sizeof(int));
+    *key = 0;
+    int *value = malloc(sizeof(int));
+    *value = 10;
+
+    assert(hm_set(hashmap, key, value) == 0);
+    assert(hm_get(hashmap, key) == value);
+
+    int *key2 = malloc(sizeof(int));
+    *key2 = 10;
+    int *value2 = malloc(sizeof(int));
+    *value2 = 20;
+
+    assert(hm_set(hashmap, key2, value2) == 0);
+    assert(hm_get(hashmap, key2) == value2);
+    assert(hm_get(hashmap, key) == value);
+
+    int *key3 = malloc(sizeof(int));
+    *key3 = 1;
+    int *value3 = malloc(sizeof(int));
+    *value3 = 30;
+
+    assert(hm_set(hashmap, key3, value3) == 0);
+    assert(hm_get(hashmap, key3) == value3);
+
+    int *non_existent_key = malloc(sizeof(int));
+    *non_existent_key = 2;
+
+    assert(hm_get(hashmap, non_existent_key) == NULL);
+
+    hm_free(hashmap);
+
+    printf("hm_get passed\n");
+
+    return;
+}
+
 int main()
 {
     printf("Running tests for \"lib/hashmap.c\"\n");
 
     test_hm_create();
     test_hm_set();
+    test_hm_get();
 
     printf("All tests passed for \"lib/hashmap.c\"\n\n");
 
