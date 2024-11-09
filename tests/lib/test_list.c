@@ -490,7 +490,7 @@ int main()
     test_ll_remove_node();
     test_ll_remove_value();
 
-    printf("All tests passed for \"lib/list.c\"\n");
+    printf("All tests passed for \"lib/list.c\"\n\n");
 
     return 0;
 }
