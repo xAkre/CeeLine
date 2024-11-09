@@ -18,7 +18,6 @@ struct LinkedList *ll_create(ValueCompareFunction value_compare_function,
                              ValueFreeFunction value_free_function)
 {
     struct LinkedList *linked_list = malloc(sizeof(struct LinkedList));
-
     if (linked_list == NULL)
     {
         return NULL;
@@ -114,7 +113,6 @@ struct LinkedListNode *ll_get_node_by_value(struct LinkedList *linked_list, void
 int ll_push(struct LinkedList *linked_list, void *value)
 {
     struct LinkedListNode *new_node = malloc(sizeof(struct LinkedListNode));
-
     if (new_node == NULL)
     {
         return -1;
@@ -194,7 +192,6 @@ int ll_insert_before_node(struct LinkedList *linked_list, struct LinkedListNode 
                           void *value)
 {
     struct LinkedListNode *new_node = malloc(sizeof(struct LinkedListNode));
-
     if (new_node == NULL)
     {
         return -1;
@@ -271,7 +268,6 @@ int ll_insert_after_node(struct LinkedList *linked_list, struct LinkedListNode *
     }
 
     struct LinkedListNode *new_node = malloc(sizeof(struct LinkedListNode));
-
     if (new_node == NULL)
     {
         return -1;
@@ -366,7 +362,6 @@ int ll_remove_node(struct LinkedList *linked_list, struct LinkedListNode *node)
 int ll_remove_value(struct LinkedList *linked_list, void *value)
 {
     struct LinkedListNode *node = ll_get_node_by_value(linked_list, value);
-
     if (node == NULL)
     {
         return -1;
