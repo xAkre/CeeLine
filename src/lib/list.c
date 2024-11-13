@@ -9,13 +9,9 @@
 /**
  * @brief Creates a new linked list.
  * @param value_compare_function A function that compares two values in the list.
- * @param value_free_function A function that frees a value in the list. Pass NULL
- *                            if the values do not need to be freed when ll_free is
- *                            called.
  * @return A pointer to the created linked list.
  */
-struct LinkedList *ll_create(ValueCompareFunction value_compare_function,
-                             ValueFreeFunction value_free_function)
+struct LinkedList *ll_create(ValueCompareFunction value_compare_function)
 {
     struct LinkedList *linked_list = malloc(sizeof(struct LinkedList));
     if (linked_list == NULL)
@@ -27,7 +23,6 @@ struct LinkedList *ll_create(ValueCompareFunction value_compare_function,
     linked_list->head = NULL;
     linked_list->tail = NULL;
     linked_list->value_compare_function = value_compare_function;
-    linked_list->value_free_function = value_free_function;
 
     return linked_list;
 }
@@ -35,18 +30,19 @@ struct LinkedList *ll_create(ValueCompareFunction value_compare_function,
 /**
  * @brief Frees a linked list.
  * @param linked_list A pointer to the linked list to free.
- * @return void
+ * @param value_free_function A function that frees a value in the list. Pass NULL
+ *                            if the values do not need to be freed.
  */
-void ll_free(struct LinkedList *linked_list)
+void ll_free(struct LinkedList *linked_list, ValueFreeFunction value_free_function)
 {
     struct LinkedListNode *current_node = linked_list->head;
 
     while (current_node != NULL)
     {
         struct LinkedListNode *next_node = current_node->next;
-        if (linked_list->value_free_function != NULL)
+        if (value_free_function != NULL)
         {
-            linked_list->value_free_function(current_node->value);
+            value_free_function(current_node->value);
         }
 
         free(current_node);
