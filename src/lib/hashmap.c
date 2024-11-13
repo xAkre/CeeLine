@@ -180,4 +180,29 @@ void *hm_get(struct HashMap *hashmap, void *key)
  * @param key A pointer to the key to remove.
  * @return A pointer to the removed value, or NULL if the key is not in the hashmap.
  */
-void *hm_remove(struct HashMap *hashmap, void *key);
+void *hm_remove(struct HashMap *hashmap, void *key)
+{
+    size_t index = hashmap->hash_function(hashmap, key);
+
+    HashMapBucket *bucket = hashmap->buckets[index];
+    struct LinkedListNode *current_node = bucket->head;
+
+    while (current_node != NULL)
+    {
+        struct HashMapEntry *current_hashmap_node = current_node->value;
+
+        if (hashmap->key_compare_function(current_hashmap_node->key, key) == 0)
+        {
+            void *value = current_hashmap_node->value;
+
+            free(current_hashmap_node);
+            ll_remove_node(bucket, current_node);
+
+            return value;
+        }
+
+        current_node = current_node->next;
+    }
+
+    return NULL;
+}
