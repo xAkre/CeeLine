@@ -9,46 +9,15 @@
 #include "lib/hashmap.h"
 #include "lib/list.h"
 
-static void hm_ll_node_free_function(void *node)
-{
-    struct HashMapEntry *hashmap_node = node;
-
-    if (hashmap_node->hashmap->key_free_function != NULL)
-    {
-        hashmap_node->hashmap->key_free_function(hashmap_node->key);
-    }
-
-    if (hashmap_node->hashmap->value_free_function != NULL)
-    {
-        hashmap_node->hashmap->value_free_function(hashmap_node->value);
-    }
-
-    free(hashmap_node);
-}
-
-static int hm_ll_node_compare_function(void *a, void *b)
-{
-    struct HashMapEntry *node_a = a;
-    struct HashMapEntry *node_b = b;
-
-    return node_a->hashmap->key_compare_function(node_a->key, node_b->key);
-}
-
 /**
  * @brief Creates a new hashmap.
  * @param capacity The capacity of the hashmap.
  * @param hash_function A function that hashes a key to an index in the hashmap.
  * @param key_compare_function A function that compares two keys in the hashmap.
- * @param key_free_function A function that frees a key in the hashmap. Pass NULL if
- *                          the keys do not need to be freed when hm_free is called.
- * @param value_free_function A function that frees a value in the hashmap. Pass NULL if
- *                            the values do not need to be freed when hm_free is called.
  * @return A pointer to the created hashmap.
  */
 struct HashMap *hm_create(size_t capacity, HashMapHashFunction hash_function,
-                          HashMapKeyCompareFunction key_compare_function,
-                          KeyFreeFunction key_free_function,
-                          ValueFreeFunction value_free_function)
+                          HashMapKeyCompareFunction key_compare_function)
 {
     struct HashMap *hashmap = malloc(sizeof(struct HashMap));
     if (hashmap == NULL)
@@ -59,9 +28,6 @@ struct HashMap *hm_create(size_t capacity, HashMapHashFunction hash_function,
     hashmap->capacity = capacity;
     hashmap->hash_function = hash_function;
     hashmap->key_compare_function = key_compare_function;
-    hashmap->key_free_function = key_free_function;
-    hashmap->value_free_function = value_free_function;
-
     hashmap->buckets = malloc(capacity * sizeof(HashMapBucket));
     if (hashmap->buckets == NULL)
     {
@@ -72,12 +38,12 @@ struct HashMap *hm_create(size_t capacity, HashMapHashFunction hash_function,
 
     for (size_t i = 0; i < capacity; i++)
     {
-        hashmap->buckets[i] = ll_create(hm_ll_node_compare_function);
+        hashmap->buckets[i] = ll_create(NULL);
         if (hashmap->buckets[i] == NULL)
         {
             for (size_t j = 0; j < i; j++)
             {
-                ll_free(hashmap->buckets[j], hm_ll_node_free_function);
+                ll_free(hashmap->buckets[j], free);
             }
 
             free(hashmap->buckets);
@@ -93,13 +59,37 @@ struct HashMap *hm_create(size_t capacity, HashMapHashFunction hash_function,
 /**
  * @brief Frees a hashmap.
  * @param hashmap A pointer to the hashmap to free.
+ * @param entry_free_function A function that frees an entry in the hashmap.
+ *                            Pass NULL if the entries do not need to be freed.
  * @return void
  */
-void hm_free(struct HashMap *hashmap)
+void hm_free(struct HashMap *hashmap, HashMapEntryFreeFunction entry_free_function)
 {
     for (size_t i = 0; i < hashmap->capacity; i++)
     {
-        ll_free(hashmap->buckets[i], hm_ll_node_free_function);
+
+        if (entry_free_function != NULL)
+        {
+            struct LinkedListNode *current_node = hashmap->buckets[i]->head;
+
+            while (current_node != NULL)
+            {
+                struct LinkedListNode *next_node = current_node->next;
+                struct HashMapEntry *current_hashmap_node = current_node->value;
+
+                if (entry_free_function != NULL)
+                {
+                    entry_free_function(current_hashmap_node);
+                }
+
+                free(current_node);
+                current_node = next_node;
+            }
+        }
+        else
+        {
+            ll_free(hashmap->buckets[i], free);
+        }
     }
 
     free(hashmap->buckets);
@@ -125,12 +115,24 @@ int hm_set(struct HashMap *hashmap, void *key, void *value)
         return -1;
     }
 
-    node_value->hashmap = hashmap;
     node_value->key = key;
     node_value->value = value;
 
-    struct LinkedListNode *existing_node_with_key =
-        ll_get_node_by_value(hashmap->buckets[index], node_value);
+    struct LinkedListNode *existing_node_with_key = NULL;
+    struct LinkedListNode *current_node = hashmap->buckets[index]->head;
+
+    while (current_node != NULL)
+    {
+        struct HashMapEntry *current_hashmap_node = current_node->value;
+
+        if (hashmap->key_compare_function(current_hashmap_node->key, key) == 0)
+        {
+            existing_node_with_key = current_node;
+            break;
+        }
+
+        current_node = current_node->next;
+    }
 
     if (existing_node_with_key == NULL)
     {

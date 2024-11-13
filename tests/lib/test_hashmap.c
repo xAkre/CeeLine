@@ -14,27 +14,27 @@ int int_compare_function(void *a, void *b)
     return *(int *)a - *(int *)b;
 }
 
-void int_free_function(void *value)
+void entry_free_function(struct HashMapEntry *entry)
 {
-    free(value);
+    free(entry->key);
+    free(entry->value);
+
+    return;
 }
 
 void test_hm_create()
 {
     printf("Testing hm_create\n");
 
-    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function,
-                                        int_free_function, int_free_function);
+    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function);
 
     assert(hashmap != NULL);
     assert(hashmap->capacity == 10);
     assert(hashmap->buckets != NULL);
     assert(hashmap->hash_function == int_hash_function);
     assert(hashmap->key_compare_function == int_compare_function);
-    assert(hashmap->key_free_function == int_free_function);
-    assert(hashmap->value_free_function == int_free_function);
 
-    hm_free(hashmap);
+    hm_free(hashmap, entry_free_function);
 
     printf("hm_create passed\n");
 
@@ -45,8 +45,7 @@ void test_hm_set()
 {
     printf("Testing hm_set\n");
 
-    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function,
-                                        int_free_function, int_free_function);
+    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function);
 
     int *key = malloc(sizeof(int));
     *key = 0;
@@ -94,7 +93,7 @@ void test_hm_set()
     assert(((struct HashMapEntry *)hashmap->buckets[0]->head->next->value)->value ==
            value2);
 
-    hm_free(hashmap);
+    hm_free(hashmap, entry_free_function);
 
     printf("hm_set passed\n");
 
@@ -105,8 +104,7 @@ void test_hm_get()
 {
     printf("Testing hm_get\n");
 
-    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function,
-                                        int_free_function, int_free_function);
+    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function);
 
     int *key = malloc(sizeof(int));
     *key = 0;
@@ -138,7 +136,7 @@ void test_hm_get()
 
     assert(hm_get(hashmap, non_existent_key) == NULL);
 
-    hm_free(hashmap);
+    hm_free(hashmap, entry_free_function);
 
     printf("hm_get passed\n");
 
