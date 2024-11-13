@@ -28,6 +28,8 @@ struct HashMapEntry
  */
 typedef void (*HashMapEntryFreeFunction)(struct HashMapEntry *);
 
+struct HashMap;
+
 /**
  * @brief A hash function that hashes a generic key to an index in a hashmap.
  * @param hashmap A pointer to the hashmap to hash into.
