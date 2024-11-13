@@ -114,8 +114,8 @@ void *hm_get(struct HashMap *hashmap, void *key);
  * @brief Removes a key-value pair from a hashmap.
  * @param hashmap A pointer to the hashmap to remove from.
  * @param key A pointer to the key to remove.
- * @return 0 if the key-value pair was removed successfully, -1 otherwise.
+ * @return A pointer to the removed value, or NULL if the key is not in the hashmap.
  */
-int hm_remove(struct HashMap *hashmap, void *key);
+void *hm_remove(struct HashMap *hashmap, void *key);
 
 #endif
