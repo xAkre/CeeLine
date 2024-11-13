@@ -54,10 +54,8 @@ void test_hm_set()
     *value = 10;
 
     assert(hm_set(hashmap, key, value) == 0);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->value)->key ==
-           key);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->value)->value ==
-           value);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->value)->key == key);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->value)->value == value);
 
     int *key2 = malloc(sizeof(int));
     *key2 = 10;
@@ -65,15 +63,12 @@ void test_hm_set()
     *value2 = 20;
 
     assert(hm_set(hashmap, key2, value2) == 0);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->value)->key ==
-           key);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->value)->value ==
-           value);
-    assert(
-        ((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->next->value)->key ==
-        key2);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->next->value)
-               ->value == value2);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->value)->key == key);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->value)->value == value);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->next->value)->key ==
+           key2);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->next->value)->value ==
+           value2);
 
     int *key3 = malloc(sizeof(int));
     *key3 = 1;
@@ -81,10 +76,8 @@ void test_hm_set()
     *value3 = 30;
 
     assert(hm_set(hashmap, key3, value3) == 0);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[1]->head->value)->key ==
-           key3);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[1]->head->value)->value ==
-           value3);
+    assert(((struct HashMapEntry *)hashmap->buckets[1]->head->value)->key == key3);
+    assert(((struct HashMapEntry *)hashmap->buckets[1]->head->value)->value == value3);
 
     int *overlap_key = malloc(sizeof(int));
     *overlap_key = 0;
@@ -92,15 +85,14 @@ void test_hm_set()
     *overlap_value = 40;
 
     assert(hm_set(hashmap, overlap_key, overlap_value) == 0);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->value)->key ==
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->value)->key ==
            overlap_key);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->value)->value ==
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->value)->value ==
            overlap_value);
-    assert(
-        ((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->next->value)->key ==
-        key2);
-    assert(((struct HashMapLinkedListNode *)hashmap->buckets[0]->head->next->value)
-               ->value == value2);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->next->value)->key ==
+           key2);
+    assert(((struct HashMapEntry *)hashmap->buckets[0]->head->next->value)->value ==
+           value2);
 
     hm_free(hashmap);
 

@@ -42,10 +42,10 @@ typedef size_t (*HashMapHashFunction)(struct HashMap *, void *);
 typedef int (*HashMapKeyCompareFunction)(void *, void *);
 
 /**
- * @struct HashMapLinkedListNode
+ * @struct HashMapEntry
  * @brief The value stored in a LinkedListNode in a hashmap bucket.
  */
-struct HashMapLinkedListNode
+struct HashMapEntry
 {
     void *key;
     void *value;

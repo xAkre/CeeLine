@@ -11,7 +11,7 @@
 
 static void hm_ll_node_free_function(void *node)
 {
-    struct HashMapLinkedListNode *hashmap_node = node;
+    struct HashMapEntry *hashmap_node = node;
 
     if (hashmap_node->hashmap->key_free_function != NULL)
     {
@@ -28,8 +28,8 @@ static void hm_ll_node_free_function(void *node)
 
 static int hm_ll_node_compare_function(void *a, void *b)
 {
-    struct HashMapLinkedListNode *node_a = a;
-    struct HashMapLinkedListNode *node_b = b;
+    struct HashMapEntry *node_a = a;
+    struct HashMapEntry *node_b = b;
 
     return node_a->hashmap->key_compare_function(node_a->key, node_b->key);
 }
@@ -119,8 +119,7 @@ int hm_set(struct HashMap *hashmap, void *key, void *value)
 {
     size_t index = hashmap->hash_function(hashmap, key);
 
-    struct HashMapLinkedListNode *node_value =
-        malloc(sizeof(struct HashMapLinkedListNode));
+    struct HashMapEntry *node_value = malloc(sizeof(struct HashMapEntry));
     if (node_value == NULL)
     {
         return -1;
@@ -160,7 +159,7 @@ void *hm_get(struct HashMap *hashmap, void *key)
 
     while (current_node != NULL)
     {
-        struct HashMapLinkedListNode *current_hashmap_node = current_node->value;
+        struct HashMapEntry *current_hashmap_node = current_node->value;
 
         if (hashmap->key_compare_function(current_hashmap_node->key, key) == 0)
         {
