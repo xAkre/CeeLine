@@ -18,16 +18,15 @@ void test_ll_create()
 {
     printf("Testing ll_create\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     assert(linked_list != NULL);
     assert(linked_list->size == 0);
     assert(linked_list->head == NULL);
     assert(linked_list->tail == NULL);
     assert(linked_list->value_compare_function == int_compare_function);
-    assert(linked_list->value_free_function == int_free_function);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_create passed\n");
 
@@ -38,7 +37,7 @@ void test_ll_has_node()
 {
     printf("Testing ll_has_node\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -59,7 +58,7 @@ void test_ll_has_node()
 
     assert(ll_has_node(linked_list, non_existent_node) == 0);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_has_node passed\n");
 
@@ -70,7 +69,7 @@ void test_ll_get_node_by_value()
 {
     printf("Testing ll_get_node_by_value\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -99,7 +98,7 @@ void test_ll_get_node_by_value()
 
     assert(ll_get_node_by_value(linked_list, non_existent_value) == NULL);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_get_node_by_value passed\n");
 
@@ -110,7 +109,7 @@ void test_ll_push()
 {
     printf("Testing ll_push\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -136,7 +135,7 @@ void test_ll_push()
     assert(linked_list->tail->value == value2);
     assert(linked_list->tail->next == NULL);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_push passed\n");
 
@@ -147,7 +146,7 @@ void test_ll_pop()
 {
     printf("Testing ll_pop\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     assert(ll_pop(linked_list) == NULL);
 
@@ -178,7 +177,7 @@ void test_ll_pop()
     assert(linked_list->head == NULL);
     assert(linked_list->tail == NULL);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_pop passed\n");
 
@@ -189,7 +188,7 @@ void test_ll_insert_before_node()
 {
     printf("Testing ll_insert_before_node\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -230,7 +229,7 @@ void test_ll_insert_before_node()
 
     assert(ll_insert_before_node(linked_list, non_existent_node, value3) == -1);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_insert_before_node passed\n");
 
@@ -241,7 +240,7 @@ void test_ll_insert_before_value()
 {
     printf("Testing ll_insert_before_value\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -279,7 +278,7 @@ void test_ll_insert_before_value()
 
     assert(ll_insert_before_value(linked_list, non_existent_value, value3) == -1);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_insert_before_value passed\n");
 
@@ -290,7 +289,7 @@ void test_ll_insert_after_node()
 {
     printf("Testing ll_insert_after_node\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -320,7 +319,7 @@ void test_ll_insert_after_node()
 
     assert(ll_insert_after_node(linked_list, non_existent_node, value3) == -1);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_insert_after_node passed\n");
 
@@ -331,7 +330,7 @@ void test_ll_insert_after_value()
 {
     printf("Testing ll_insert_after_value\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -360,7 +359,7 @@ void test_ll_insert_after_value()
 
     assert(ll_insert_after_value(linked_list, non_existent_value, value3) == -1);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_insert_after_value passed\n");
 
@@ -371,7 +370,7 @@ void test_ll_remove_node()
 {
     printf("Testing ll_remove_node\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -415,7 +414,7 @@ void test_ll_remove_node()
 
     assert(ll_remove_node(linked_list, non_existent_node) == -1);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_remove_node passed\n");
 
@@ -426,7 +425,7 @@ void test_ll_remove_value()
 {
     printf("Testing ll_remove_value\n");
 
-    struct LinkedList *linked_list = ll_create(int_compare_function, int_free_function);
+    struct LinkedList *linked_list = ll_create(int_compare_function);
 
     int *value = malloc(sizeof(int));
     *value = 42;
@@ -467,7 +466,7 @@ void test_ll_remove_value()
 
     assert(ll_remove_value(linked_list, non_existent_value) == -1);
 
-    ll_free(linked_list);
+    ll_free(linked_list, int_free_function);
 
     printf("ll_remove_value passed\n");
 
