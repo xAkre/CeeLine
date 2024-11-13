@@ -10,20 +10,23 @@
 #include "lib/list.h"
 
 /**
- * @brief A function that frees a generic key.
- * @param key The key to free.
- * @return void
+ * @struct HashMapEntry
+ * @brief The value stored in a LinkedListNode in a hashmap bucket.
  */
-typedef void (*KeyFreeFunction)(void *);
+struct HashMapEntry
+{
+    void *key;
+    void *value;
+};
 
 /**
- * @brief A function that frees a generic value.
- * @param value The value to free.
+ * @brief A function that frees a hash map entry consisting of a key and a value.
+ * @param entry A pointer to the entry to free.
  * @return void
+ *
+ * This function should not free the entry pointer itself. Only the key and value.
  */
-typedef void (*ValueFreeFunction)(void *);
-
-struct HashMap;
+typedef void (*HashMapEntryFreeFunction)(struct HashMapEntry *);
 
 /**
  * @brief A hash function that hashes a generic key to an index in a hashmap.
@@ -41,17 +44,6 @@ typedef size_t (*HashMapHashFunction)(struct HashMap *, void *);
  */
 typedef int (*HashMapKeyCompareFunction)(void *, void *);
 
-/**
- * @struct HashMapEntry
- * @brief The value stored in a LinkedListNode in a hashmap bucket.
- */
-struct HashMapEntry
-{
-    void *key;
-    void *value;
-    struct HashMap *hashmap;
-};
-
 typedef struct LinkedList HashMapBucket;
 
 /**
@@ -59,14 +51,12 @@ typedef struct LinkedList HashMapBucket;
  * @brief A generic hashmap.
  *
  * This hashmap contains a capacity, a pointer to its buckets,
- * as well as pointers to functions that hash, free and compare keys and values.
+ * as well as pointers to a hash function and key compare function.
  */
 struct HashMap
 {
     size_t capacity;
     HashMapBucket **buckets;
-    KeyFreeFunction key_free_function;
-    ValueFreeFunction value_free_function;
     HashMapHashFunction hash_function;
     HashMapKeyCompareFunction key_compare_function;
 };
@@ -76,22 +66,18 @@ struct HashMap
  * @param capacity The capacity of the hashmap.
  * @param hash_function A function that hashes a key to an index in the hashmap.
  * @param key_compare_function A function that compares two keys in the hashmap.
- * @param key_free_function A function that frees a key in the hashmap. Pass NULL if
- *                          the keys do not need to be freed when hm_free is called.
- * @param value_free_function A function that frees a value in the hashmap. Pass NULL if
- *                            the values do not need to be freed when hm_free is called.
  * @return A pointer to the created hashmap.
  */
 struct HashMap *hm_create(size_t capacity, HashMapHashFunction hash_function,
-                          HashMapKeyCompareFunction key_compare_function,
-                          KeyFreeFunction key_free_function,
-                          ValueFreeFunction value_free_function);
+                          HashMapKeyCompareFunction key_compare_function);
 /**
  * @brief Frees a hashmap.
  * @param hashmap A pointer to the hashmap to free.
+ * @param entry_free_function A function that frees an entry in the hashmap.
+ *                           Pass NULL if the entries do not need to be freed.
  * @return void
  */
-void hm_free(struct HashMap *hashmap);
+void hm_free(struct HashMap *hashmap, HashMapEntryFreeFunction entry_free_function);
 
 /**
  * @brief Sets a key-value pair in a hashmap.
