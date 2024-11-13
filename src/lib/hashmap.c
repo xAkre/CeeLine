@@ -72,13 +72,12 @@ struct HashMap *hm_create(size_t capacity, HashMapHashFunction hash_function,
 
     for (size_t i = 0; i < capacity; i++)
     {
-        hashmap->buckets[i] =
-            ll_create(hm_ll_node_compare_function, hm_ll_node_free_function);
+        hashmap->buckets[i] = ll_create(hm_ll_node_compare_function);
         if (hashmap->buckets[i] == NULL)
         {
             for (size_t j = 0; j < i; j++)
             {
-                ll_free(hashmap->buckets[j]);
+                ll_free(hashmap->buckets[j], hm_ll_node_free_function);
             }
 
             free(hashmap->buckets);
@@ -100,7 +99,7 @@ void hm_free(struct HashMap *hashmap)
 {
     for (size_t i = 0; i < hashmap->capacity; i++)
     {
-        ll_free(hashmap->buckets[i]);
+        ll_free(hashmap->buckets[i], hm_ll_node_free_function);
     }
 
     free(hashmap->buckets);
