@@ -143,6 +143,62 @@ void test_hm_get()
     return;
 }
 
+void test_hm_remove()
+{
+    printf("Testing hm_remove\n");
+
+    struct HashMap *hashmap = hm_create(10, int_hash_function, int_compare_function);
+
+    int *key = malloc(sizeof(int));
+    *key = 0;
+    int *value = malloc(sizeof(int));
+    *value = 10;
+
+    assert(hm_set(hashmap, key, value) == 0);
+    assert(hm_remove(hashmap, key) == value);
+    assert(hm_get(hashmap, key) == NULL);
+
+    free(key);
+    free(value);
+
+    int *key2 = malloc(sizeof(int));
+    *key2 = 10;
+    int *value2 = malloc(sizeof(int));
+    *value2 = 20;
+
+    assert(hm_set(hashmap, key2, value2) == 0);
+    assert(hm_remove(hashmap, key2) == value2);
+    assert(hm_get(hashmap, key2) == NULL);
+
+    free(key2);
+    free(value2);
+
+    int *key3 = malloc(sizeof(int));
+    *key3 = 1;
+    int *value3 = malloc(sizeof(int));
+    *value3 = 30;
+
+    assert(hm_set(hashmap, key3, value3) == 0);
+    assert(hm_remove(hashmap, key3) == value3);
+    assert(hm_get(hashmap, key3) == NULL);
+
+    free(key3);
+    free(value3);
+
+    int *non_existent_key = malloc(sizeof(int));
+    *non_existent_key = 2;
+
+    assert(hm_remove(hashmap, non_existent_key) == NULL);
+
+    free(non_existent_key);
+
+    hm_free(hashmap, entry_free_function);
+
+    printf("hm_remove passed\n");
+
+    return;
+}
+
 int main()
 {
     printf("Running tests for \"lib/hashmap.c\"\n");
@@ -150,6 +206,7 @@ int main()
     test_hm_create();
     test_hm_set();
     test_hm_get();
+    test_hm_remove();
 
     printf("All tests passed for \"lib/hashmap.c\"\n\n");
 
