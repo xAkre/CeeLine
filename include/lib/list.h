@@ -39,7 +39,7 @@ struct LinkedListNode
  * @brief A linked list.
  *
  * This linked list contains a size, a pointer to it's head and tail nodes,
- * as well as pointers to functions that free and compare values contained
+ * as well as a pointer to a function compares values contained
  * in the list.
  */
 struct LinkedList
@@ -47,27 +47,23 @@ struct LinkedList
     size_t size;
     struct LinkedListNode *head;
     struct LinkedListNode *tail;
-    ValueFreeFunction value_free_function;
     ValueCompareFunction value_compare_function;
 };
 
 /**
  * @brief Creates a new linked list.
  * @param value_compare_function A function that compares two values in the list.
- * @param value_free_function A function that frees a value in the list. Pass NULL
- *                            if the values do not need to be freed when ll_free is
- *                            called.
  * @return A pointer to the created linked list.
  */
-struct LinkedList *ll_create(ValueCompareFunction value_compare_function,
-                             ValueFreeFunction value_free_function);
+struct LinkedList *ll_create(ValueCompareFunction value_compare_function);
 
 /**
  * @brief Frees a linked list.
  * @param linked_list A pointer to the linked list to free.
- * @return void
+ * @param value_free_function A function that frees a value in the list. Pass NULL
+ *                            if the values do not need to be freed.
  */
-void ll_free(struct LinkedList *linked_list);
+void ll_free(struct LinkedList *linked_list, ValueFreeFunction value_free_function);
 
 /**
  * @brief Checks if a linked list has a node.
